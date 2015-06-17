@@ -15,7 +15,6 @@ export class CinemaList {
   data: Array<Object>;
   constructor(@Inject(HttpFactory) http:Http) {
     this.http = http;
-    debugger;
     this.params = `?apikey=${this.API_KEY}&page_limit=${this.pageSize}`;
     this.requestUrl = this.API_URL + this.params;
   }
