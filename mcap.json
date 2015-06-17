@@ -1,0 +1,10 @@
+{
+  "name": "todo",
+  "description": "Todo App",
+  "baseAlias": "/bikini-todo-app",
+  "uuid": "9f05973f-d827-4d60-b74b-e7c972a851cf",
+  "client": "./client/www/",
+  "server": "./server/index.js",
+  "directoryIndex": "true",
+  "private": false
+}
