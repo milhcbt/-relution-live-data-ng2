@@ -1,62 +1,62 @@
 import {Component, View, NgFor, NgIf} from 'angular2/angular2';
-import {TodosList} from '../../services/TodosList';
+import {CinemaList} from '../../services/CinemaList';
 
 @Component({
   selector: 'component-1',
-  appInjector: [TodosList]
+  appInjector: [CinemaList]
 })
 @View({
   template: `
-  <ul class="list">
-    <li class="item item-toggle item-light " [class.completed]="todo.completed !== false" *ng-for="#todo of todos">
-      {{todo.title}}
-      <label class="toggle toggle-balanced " (click)="setCompleted(todo._id)">
-         <input type="checkbox" [checked]="todo.completed !== false">
-         <div class="track">
-           <div class="handle"></div>
-         </div>
-      </label>
-    </li>
-  </ul>
+  <div class="list card" *ng-for="#movie of movies" [id]="movie.id">
+  <div class="item item-avatar">
+    <img [src]="movie.posters.thumbnail">
+    <h2>{{movie.title}}</h2>
+    <p>{{movie.release_dates.theater}} {{movie.year}}</p>
+  </div>
+
+  <div class="item item-body">
+    <img class="full-image" [src]="movie.posters.profile">
+    <p>
+      {{movie.synopsis}}
+    </p>
+    <p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>
+  </div>
+
+  <div class="item tabs tabs-secondary tabs-icon-left">
+    <a class="tab-item" href="#">
+      <i class="icon ion-thumbsup"></i>
+      Like
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-chatbox"></i>
+      Comment
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-share"></i>
+      Share
+    </a>
+  </div>
+</div>
   `,
   directives: [NgFor, NgIf]
 })
 export class Todo {
-  list:TodosList;
-  todos:Array<Object> = [];
-
-  constructor(list:TodosList) {
+  list:CinemaList;
+  movies:Array<Object> = [];
+  data: Array<Object>;
+  constructor(list:CinemaList) {
     this.list = list;
     this.getList();
   }
   getList(){
     let self = this;
-    let promise = new Promise(resolve => {
-      resolve(this.list.fetch());
-    });
-    promise.then(function (models) {
-      self.todos = models;
-      //debugger;
-    });
-  }
-  filterById(obj){
-    if ('_id' in obj && obj._id === this[0]) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  setCompleted(id) {
-    let model = this.todos.find(this.filterById, [id]);
-    model.completed = !model.completed;
-    let promise = new Promise(resolve => {
-      resolve(this.list.save(id, model));
-    });
-    promise.then(function (model) {
-      //debugger;
-      //self.getList();
-    }).catch(function (e) {
-      //debugger;
+    this.list.fetch().subscribe(function (res) {
+      self.data = JSON.parse(res._body);
+      self.movies = self.data.movies;
+      console.log(self.movies[0]);
     });
   }
 }

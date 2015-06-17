@@ -8831,3 +8831,7 @@ a.button {
 
 .item.completed {
   text-decoration: line-through; }
+
+.content .list {
+  height: 100%;
+  overflow: auto; }

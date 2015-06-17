@@ -1,5 +1,6 @@
 /// <reference path="../typings/tsd.d.ts" />
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
+import {httpInjectables, Http} from 'angular2/http';
 import {RouteConfig, RouterOutlet, RouterLink, routerInjectables} from 'angular2/router';
 
 import {Todo} from './components/todo/todo';
@@ -41,7 +42,7 @@ if (window.cordova !== undefined) {
   this.bindEvents();
 } else {
   console.log('no device');
-  bootstrap(App, [routerInjectables]);
+  bootstrap(App, [routerInjectables, httpInjectables]);
 }
 
 

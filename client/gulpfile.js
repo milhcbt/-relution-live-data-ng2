@@ -65,8 +65,7 @@ var PATH = {
 
 var ng2Builder = new Builder({
   paths: {
-    'angular2/*': 'node_modules/angular2/es6/dev/*.es6',
-    'angular2_material/*': 'app/modules/angular2_material/*.ts',
+    'angular2/*': 'node_modules/angular2/es6/dev/*.js',
     rx: 'node_modules/angular2/node_modules/rx/dist/rx.js'
   },
   meta: {
@@ -82,7 +81,9 @@ var appProdBuilder = new Builder({
     'angular2/angular2': {build: false},
     'angular2/router': {build: false},
     'angular2/forms': { build: false },
-    'angular2_material': { build: false }
+    'angular2/di': { build: false },
+    'angular2/http': { build: false },
+    'angular2/src/http/http': {build: false}
   }
 });
 
@@ -126,7 +127,6 @@ gulp.task('clean.app.prod', function (done) {
 
 gulp.task('clean.tmp', function (done) {
   del('tmp', done);
-
 });
 
 // --------------
@@ -166,12 +166,17 @@ gulp.task('build.index.dev', function () {
     .pipe(template({VERSION: getVersion()}))
     .pipe(gulp.dest(PATH.dest.dev.all));
 });
-gulp.task('style', function () {
+gulp.task('style', ['assets'], function () {
   return sass('./app/scss/')
     .on('error', function (err) {
       console.error('Error!', err.message);
     })
     .pipe(gulp.dest('app/styles'));
+
+});
+gulp.task('assets', function () {
+  gulp.src('./app/assets/**/*.*')
+    .pipe(gulp.dest('./www'));
 
 });
 gulp.task('build.app.dev', function (done) {
